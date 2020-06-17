@@ -1,47 +1,85 @@
-# Rahim Abdul 
-
-#Lot Converter using Risk
-def converter(risk,pips):
-    rate = pips/risk
-    return 0.1/rate
-
-while True:
-    try:
-        risk = input('Enter risk amount: ')
-        if risk == 'exit': break
-        risk = float(risk)
-        pips = input('Enter pips to stop loss value: ')
-        if pips == 'exit': break
-        pips = float(pips)
-
-        lot_amount = round(converter(risk,pips),3)
-        print('==================================')
-        print('Your lot amount should be roughly:',lot_amount)
-        print('==================================\n')
-
-    except:
-        print('Numeric values only\n')
-        continue
+# Rahim Abdulmalik
+# Pip Converter using Risk
 
 '''
-#Pip Converter change the values for risk and pips accordingly
-risk = 100
-pips = 50
+For my fellow traders out there that use Metatrader as a platform and potentially trade Forex. 
+I have created a calculator that determines what your lot size should be based on how much you are willing to lose, 
+and the amount of pips from entry in which you would exit a trade.
 
-def converter(risk,pips):
-    rate = pips/risk
-    return 0.1/rate
+For example, lets say you wanted to sell USD/JPY at 107.20 and you determine that your stop loss will be at 108.20. 
+You also decide that you are not willing to lose more than $200 per trade. From entry to stop loss is 100 pips, 
+so with the calculator your inputs would be 200 for the risk amount and 100 for the amount of pips, 
+giving you the lot size that you should trade with.
 
-lot_amount = round(converter(risk,pips),3)
-print('Your lot size should be roughly:', lot_amount)
+I have created 2 simple methods under the TradingCalc class in Python, in order to execute this program. 
+One of the methods can be continuously ran by opening the ".py" python file in a command line. 
+To exit the program type "exit" for one of the inputs. 
+The 2nd method can be used in an IDE/text editor by adjusting the risk and pips amount accordingly. Enjoy!
 '''
 
-'''
-For my fellow traders out there that use Metatrader as a platform and potentially trade Forex. I have created a calculator that determines what your lot size should be based on how much you are willing to lose, and the amount of pips from entry in which you would exit a trade.
+class TradingCalc:
+    '''
+    the first method "man_input" requires the user to insert a risk amount
+    in dollars and the pip count from entry to stop loss. These 2 variables
+    must be called when using this method.
+    '''
+    def man_input(self,risk,pips):
+        lot = 0.1 / (pips/risk)  #The actual conversion equation
+        if lot < 0.008:  #used to determine if risk is too low
+            return 'Risk amount is too low'
+        lot = round(lot,2)
+        return f'Your lot size should be roughly {lot}\n'
 
-For example, lets say you wanted to sell USD/JPY at 107.20 and you determine that your stop loss will be at 108.20. You also decide that you are not willing to lose more than $200 per trade. From entry to stop loss is 100 pips, so with the calculator your inputs would be 200 for the risk amount and 100 for the amount of pips, giving you the lot size that you should trade with.
+    '''
+    the second method creates an endless loop in the terminal which asks the
+    user for the risk amount and pip count (similar to the first method), then
+    prints out the proper lot size to be traded. In order to exit the loop, simply
+    type "exit".
+    '''
+    def loop_input(self):
+        while True:
+            try:
+                risk = input('Enter risk amount (in dollars): ')
+                if risk == 'exit': break
+                risk = float(risk)
+                pips = input('Enter pips to stop loss value: ')
+                if pips == 'exit': break
+                pips = float(pips)
 
-I have created 2 simple programs in Python. One of the programs can be continuously ran by opening the ".py" python file in a command line. To exit the program type "exit" for one of the inputs. The 2nd program can be used in an IDE by adjusting the risk and pips amount accordingly. Enjoy!
-'''
+                lot = 0.1 / (pips/risk)
+                if lot < 0.008:
+                    print('==================================')
+                    print('Risk amount is too low')
+                    print('==================================\n')
+                    continue
+                lot = round(lot,2)
+                print('==================================')
+                print(f'Your lot size should be roughly {lot}')
+                print('==================================\n')
+            except:
+                print('Numeric values only\n')
+                continue
+
+
+trade = TradingCalc() #creating the object
+# uncomment the entire method that is desired to be used
+
+# Method 1:
+# Insert your risk and pips amount to be used in for the
+# following variables, then print the statement.
+# 100 and 70 are there by default
+
+dollar_amount = 100
+pips_sl = 70
+print(trade.man_input(dollar_amount,pips_sl))
+
+# # ====================================================
+
+# # Method 2:
+# # Print the following function to start the loop in a
+# # terminal. In order to exit the loop, type the word exit
+#
+# print(trade.loop_input())
+
 
 
