@@ -17,3 +17,9 @@ To exit the program type "exit" for one of the inputs.
 Python version 3.7.4 was used to create this program
 
 Enjoy!
+
+---
+
+## License & copyright
+
+© Rahim Abdulmalik, University of Houston Downtown Data Analytics
